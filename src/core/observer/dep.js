@@ -1,3 +1,12 @@
+/*
+ * @Author: gogoend
+ * @Date: 2020-02-02 01:34:53
+ * @LastEditors: gogoend
+ * @LastEditTime: 2020-06-29 21:38:24
+ * @FilePath: \vue\src\core\observer\dep.js
+ * @Description:Dep类
+ */
+
 /* @flow */
 
 import type Watcher from './watcher'
@@ -32,7 +41,10 @@ export default class Dep {
       Dep.target.addDep(this)
     }
   }
-
+/**
+*每一个属性都会包含一个dep实例
+*这个dep实例会记录下参与计算或渲染的watcher
+*/
   notify () {
     // stabilize the subscriber list first
     const subs = this.subs.slice()

@@ -60,6 +60,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
+      // 首次渲染
       // initial render
       vm.$el = vm.__patch__(
         vm.$el, vnode, hydrating, false /* removeOnly */,
@@ -70,6 +71,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
       // this prevents keeping a detached DOM tree in memory (#5851)
       vm.$options._parentElm = vm.$options._refElm = null
     } else {
+      // 非首次渲染，更新
       // updates
       vm.$el = vm.__patch__(prevVnode, vnode)
     }
@@ -140,6 +142,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
   }
 }
 
+//
 export function mountComponent (
   vm: Component,
   el: ?Element,
@@ -189,10 +192,13 @@ export function mountComponent (
     }
   } else {
     updateComponent = () => {
+      // _render用于生成虚拟DOM
+      // update 内部调用patch 方法将虚拟DOM与真实的DOM同步 (diff算法)
       vm._update(vm._render(), hydrating)
     }
   }
 
+  // 渲染Watcher初始化完后，调用下方生命周期函数mounted
   vm._watcher = new Watcher(vm, updateComponent, noop)
   hydrating = false
 
